@@ -49,6 +49,11 @@ try {
             $commentController->showMonitoring();
             break;
 
+        case 'comments':
+            $commentController = new CommentController();
+            $commentController->showCommentsByArticle();
+            break;
+
         case 'connectionForm':
             $adminController = new AdminController();
             $adminController->displayConnectionForm();
@@ -91,9 +96,12 @@ try {
             } else {
                 throw new Exception("La page demandée n'existe pas.");
             }
+            
     }
 } catch (Exception $e) {
     // En cas d'erreur, on affiche la page d'erreur.
     $errorView = new View('Erreur');
     $errorView->render('errorPage', ['errorMessage' => $e->getMessage()]);
 }
+
+
