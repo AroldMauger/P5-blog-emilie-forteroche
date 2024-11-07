@@ -44,4 +44,33 @@ class CommentController
         // On redirige vers la page de l'article.
         Utils::redirect("showArticle", ['id' => $idArticle]);
     }
+
+
+    public function showCommentsByArticle() {
+        $id = Utils::request("id", -1);
+
+        // Vérifiez si l'id est valide
+        if ($id == -1) {
+            Utils::redirect("monitoring");
+            return;
+        }
+
+        $articleManager = new ArticleManager();
+        $article = $articleManager->getArticleById($id);
+
+        // Vérifiez si l'article existe
+        if (!$article) {
+            // Redirection vers la page de monitoring
+            Utils::redirect("monitoring");
+            return;
+        }
+        $commentManager = new CommentManager();
+        $comments = $commentManager->getAllCommentsByArticleId($id);
+
+        $view = new View("comments");
+        $view->render("comments", [
+            'article' => $article,
+            'comments' => $comments
+        ]);
+    }
 }
