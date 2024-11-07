@@ -79,6 +79,11 @@ try {
             $adminController->deleteArticle();
             break;
 
+        case 'deleteComment':
+            $commentController = new CommentController();
+            $commentController->deleteComment();
+            break;
+
         default:
             if (isset($_GET['sort']) || isset($_GET['order'])) {
                 $adminController = new AdminController();

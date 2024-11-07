@@ -73,4 +73,24 @@ class CommentController
             'comments' => $comments
         ]);
     }
+
+
+    public function deleteComment() {
+        $id = Utils::request("id", -1);
+        $articleId = Utils::request("articleId", -1);
+
+        $commentManager = new CommentManager();
+        $comment = $commentManager->getCommentById($id);
+
+        if (!$comment) {
+            Utils::redirect("comments&id=" . $articleId);
+            return;
+        }
+
+        $result = $commentManager->deleteComment($comment);
+        if (!$result) {
+            throw new Exception("Une erreur est survenue lors de la suppression du commentaire.");
+        }
+        Utils::redirect("comments&id=" . $articleId);
+    }
 }
