@@ -12,6 +12,7 @@
         <tr>
             <th>PSEUDO</th>
             <th>CONTENU</th>
+            <th>DATE</th>
             <th>ACTION</th>
         </tr>
         </thead>
@@ -20,6 +21,7 @@
             <tr>
                 <td><?= $comment->getPseudo() ?></td>
                 <td><?= $comment->getContent() ?></td>
+                <td><?= $comment->getDateCreation()->format('d/m/Y') ?></td>
                 <td class="edit-btn">
                     <a href="?action=deleteComment&id=<?=$comment->getId()?>&articleId=<?=$article->getId()?>" class="edit-comments-btn" onClick="return confirmDelete(event)"> 
                         <i class="fa-solid fa-trash"></i>
