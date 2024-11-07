@@ -332,8 +332,9 @@ a.info {
     color: white;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 12px;
 }
+
 
 .monitoring-table tr:nth-child(even) {
     background-color: var(--headerPaleColor);
@@ -347,9 +348,38 @@ a.info {
     color: var(--commentColor);
 }
 
-.monitoring-table tr:hover {
+.monitoring-table .edit-btn:hover {
     background-color: var(--quoteColor);
 }
+
+.edit-comments-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap:4px;
+}
+
+.title-comment-page {
+    color: var(--titleColor);
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    font-size: 25px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.fa-trash {
+    color: var(--titleColor);
+}
+
+.no-comments {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #666;
+}
+
 /** 
  * Footer global de la page.
  */
