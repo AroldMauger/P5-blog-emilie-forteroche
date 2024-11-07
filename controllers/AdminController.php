@@ -1,8 +1,8 @@
-<?php 
+<?php
 /**
  * Contrôleur de la partie admin.
  */
- 
+
 class AdminController {
 
     /**
@@ -31,21 +31,53 @@ class AdminController {
         // On récupère les articles.
         $articleManager = new ArticleManager();
         $articles = $articleManager->getAllArticles();
+        $articleData = [];
 
         // On récupère les commentaires pour chaque article
         $commentManager = new CommentManager();
         $articleComments = [];
+
         foreach ($articles as $article) {
             $articleComments[$article->getId()] = $commentManager->getAllCommentsByArticleId($article->getId());
+
+            $articleData[] = [
+                'id' => $article->getId(),
+                'title' => $article->getTitle(),
+                'views' => $article->getViews(),
+                'comments' => count($commentManager->getAllCommentsByArticleId($article->getId())),
+                'date' => $article->getDateCreation()->getTimestamp()
+            ];
         }
+
+        $sort = isset($_GET['sort']) ? $_GET['sort'] : 'date';
+        $order = isset($_GET['order']) && $_GET['order'] === 'asc' ? SORT_ASC : SORT_DESC;
+
+        $column = array_column($articleData, $sort);
+        array_multisort($column, $order, $articleData);
 
         // On affiche la page d'administration.
         $view = new View("Monitoring");
         $view->render("monitoring", [
-            'articles' => $articles,
-            'articleComments' => $articleComments
+            'articles' => $articleData,
+            'articleComments' => $articleComments,
+            'sort' => $sort,
+            'order' => $order === SORT_ASC ? 'asc' : 'desc'
         ]);
     }
+
+
+    public function showCommentsByArticle() {
+
+        $id = Utils::request("id", -1);
+
+        $commentManager = new CommentManager();
+        $comments = $commentManager->getAllCommentsByArticleId($id);
+        $view = new View("comments");
+        $view->render("comments", [
+            'comments' => $comments
+        ]);
+    }
+
     /**
      * Vérifie que l'utilisateur est connecté.
      * @return void
@@ -62,7 +94,7 @@ class AdminController {
      * Affichage du formulaire de connexion.
      * @return void
      */
-    public function displayConnectionForm() : void 
+    public function displayConnectionForm() : void
     {
         $view = new View("Connexion");
         $view->render("connectionForm");
@@ -72,7 +104,7 @@ class AdminController {
      * Connexion de l'utilisateur.
      * @return void
      */
-    public function connectUser() : void 
+    public function connectUser() : void
     {
         // On récupère les données du formulaire.
         $login = Utils::request("login");
@@ -108,7 +140,7 @@ class AdminController {
      * Déconnexion de l'utilisateur.
      * @return void
      */
-    public function disconnectUser() : void 
+    public function disconnectUser() : void
     {
         // On déconnecte l'utilisateur.
         unset($_SESSION['user']);
@@ -121,7 +153,7 @@ class AdminController {
      * Affichage du formulaire d'ajout d'un article.
      * @return void
      */
-    public function showUpdateArticleForm() : void 
+    public function showUpdateArticleForm() : void
     {
         $this->checkIfUserIsConnected();
 
@@ -145,11 +177,11 @@ class AdminController {
     }
 
     /**
-     * Ajout et modification d'un article. 
+     * Ajout et modification d'un article.
      * On sait si un article est ajouté car l'id vaut -1.
      * @return void
      */
-    public function updateArticle() : void 
+    public function updateArticle() : void
     {
         $this->checkIfUserIsConnected();
 
@@ -193,7 +225,7 @@ class AdminController {
         // On supprime l'article.
         $articleManager = new ArticleManager();
         $articleManager->deleteArticle($id);
-       
+
         // On redirige vers la page d'administration.
         Utils::redirect("admin");
     }
