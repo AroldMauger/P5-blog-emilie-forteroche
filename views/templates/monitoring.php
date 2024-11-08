@@ -34,7 +34,7 @@
             <tr>
                 <td class="title-content"><?= htmlspecialchars($article['title']) ?></td>
                 <td class="monitoring-content"><?= $article['views'] ?></td>
-                <td><?= $article['comments'] ?></td>
+                <td><?= htmlspecialchars($article['comments']) ?></td>
                 <td><?= date('d/m/Y', $article['date']) ?></td>
                 <td class="edit-btn">
                     <a href="?action=comments&id=<?=$article['id']?>" class="edit-comments-btn">

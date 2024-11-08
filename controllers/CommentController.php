@@ -49,7 +49,6 @@ class CommentController
     public function showCommentsByArticle() {
         $id = Utils::request("id", -1);
 
-        // Vérifiez si l'id est valide
         if ($id == -1) {
             Utils::redirect("monitoring");
             return;
@@ -58,7 +57,6 @@ class CommentController
         $articleManager = new ArticleManager();
         $article = $articleManager->getArticleById($id);
 
-        // Vérifiez si l'article existe
         if (!$article) {
             // Redirection vers la page de monitoring
             Utils::redirect("monitoring");
@@ -69,8 +67,8 @@ class CommentController
 
         $view = new View("comments");
         $view->render("comments", [
-            'article' => $article,
-            'comments' => $comments
+            'comments' => $comments,
+            'article' => $article
         ]);
     }
 

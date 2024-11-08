@@ -1,6 +1,10 @@
+
+
 <h2>Edition des commentaires </h2>
 <div class="title-comment-page">
-    <h3><?= $article->getTitle() ?></h3>
+    <?php if (isset($article)) : ?>
+        <h3><?= $article->getTitle() ?></h3>
+    <?php endif ?>
 </div>
 <?php if (empty($comments)): ?>
         <span class="no-comments">Aucun commentaire sur cet article pour le moment</span>
@@ -19,8 +23,8 @@
         <tbody>
         <?php foreach ($comments as $comment) { ?>
             <tr>
-                <td><?= $comment->getPseudo() ?></td>
-                <td><?= $comment->getContent() ?></td>
+                <td><?= htmlspecialchars($comment->getPseudo()) ?></td>
+                <td><?= htmlspecialchars($comment->getContent()) ?></td>
                 <td><?= $comment->getDateCreation()->format('d/m/Y') ?></td>
                 <td class="edit-btn">
                     <a href="?action=deleteComment&id=<?=$comment->getId()?>&articleId=<?=$article->getId()?>" class="edit-comments-btn" onClick="return confirmDelete(event)"> 

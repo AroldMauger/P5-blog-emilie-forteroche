@@ -48,8 +48,14 @@ class AdminController {
                 'date' => $article->getDateCreation()->getTimestamp()
             ];
         }
+        $acceptedSorts = [
+            'title',
+            'views',
+            'comments',
+            'date'
+        ];
 
-        $sort = isset($_GET['sort']) ? $_GET['sort'] : 'date';
+        $sort = isset($_GET['sort']) && in_array($_GET['sort'], $acceptedSorts) ? $_GET['sort'] : 'date';
         $order = isset($_GET['order']) && $_GET['order'] === 'asc' ? SORT_ASC : SORT_DESC;
 
         $column = array_column($articleData, $sort);
